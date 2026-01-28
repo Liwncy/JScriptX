@@ -1,0 +1,8 @@
+{
+  // 相关配置
+  "base": {
+    "debug": true,                                     // 是否启用调试模式
+    "debugConfig": {},                                  // 调试模式配置
+    "redis": "redis://localhost:6380/0"  // redis连接字符串
+  }
+}
