@@ -14,6 +14,8 @@ JScriptX是一个现代化的插件式游戏脚本框架，旨在提供灵活、
 - **丰富的API**：提供游戏自动化所需的核心API
 - **配置灵活**：支持JSON配置文件，易于定制
 - **完善的日志**：集成SLF4J和Logback，提供详细的日志记录
+- **命令系统**：内置命令行系统，支持插件命令和系统命令
+- **事件驱动**：基于Vert.x的事件总线，实现组件间通信
 
 ## 🛠️ 技术栈
 
@@ -30,14 +32,26 @@ JScriptX是一个现代化的插件式游戏脚本框架，旨在提供灵活、
 ```
 JScriptX/
 ├── jscriptx-boot/        # 启动模块
+│   ├── src/main/java/    # 源代码
+│   └── target/           # 构建输出
 ├── jscriptx-core/        # 核心引擎
+│   ├── src/main/java/    # 源代码
+│   └── target/           # 构建输出
 ├── jscriptx-plugins/      # 插件模块
+│   ├── jscriptx-plugin-helloword/  # 示例插件
+│   └── target/           # 构建输出
+├── plugins/              # 插件目录
+├── logs/                 # 日志目录
+├── config/               # 配置目录
 └── README.md             # 项目说明
 ```
 
 - **jscriptx-boot**：包含启动类和初始化逻辑
 - **jscriptx-core**：提供核心API和基础功能
 - **jscriptx-plugins**：插件管理和插件实现
+- **plugins/**：存放插件文件的目录
+- **logs/**：日志文件输出目录
+- **config/**：配置文件目录
 
 ## 🚀 快速开始
 
@@ -50,7 +64,7 @@ JScriptX/
 
 1. **克隆项目**
    ```bash
-   git clone https://github.com/yourusername/JScriptX.git
+   git clone https://github.com/Liwncy/JScriptX.git
    cd JScriptX
    ```
 
@@ -68,45 +82,108 @@ JScriptX/
 
 ### 配置文件
 
-项目使用 `config.json5` 作为配置文件，位于 `resources` 目录下。主要配置项包括：
+项目使用 `config.json5` 作为配置文件，位于 `config` 目录下。主要配置项包括：
 
 - **插件配置**：管理插件的启用状态和参数
 - **系统配置**：框架的基本设置
+- **日志配置**：日志级别和输出设置
 
 ### 插件管理
 
 1. **插件目录**：默认位于 `plugins` 目录
 2. **插件格式**：支持 `.jar` 和 `.zip` 格式的插件包
 3. **插件配置**：在 `config.json5` 中配置插件参数
+4. **插件加载**：启动时自动加载插件目录中的插件
 
 ## 📖 使用指南
+
+### 命令系统
+
+JScriptX内置了命令行系统，支持通过控制台输入命令来操作框架：
+
+#### 命令格式
+```
+/命令 参数1 参数2 ...
+```
+
+#### 内置命令
+- **/plugin-manager** (别名：/pm)：插件管理命令
+  - `enable <插件名>`：启用插件
+  - `disable <插件名>`：禁用插件
+  - `load <插件名>`：加载插件
+  - `unload <插件名>`：卸载插件
+  - `reload <插件名>`：重载插件
+  - `list`：列出所有插件
+  - `info <插件名>`：查看插件信息
+
+#### 示例
+```bash
+# 列出所有插件
+/plugin-manager list
+
+# 启用插件
+/plugin-manager enable helloword
+
+# 查看插件信息
+/plugin-manager info helloword
+```
 
 ### 编写插件
 
 1. **创建插件项目**：新建Maven项目，添加JScriptX核心依赖
 2. **实现插件接口**：继承 `Plugin` 接口，实现必要的方法
-3. **打包插件**：构建为jar文件，放入plugins目录
+3. **配置插件**：创建 `plugin.json` 描述文件
+4. **打包插件**：构建为jar文件，放入plugins目录
 
-### 示例插件
+### 插件结构
 
-```javascript
-// JavaScript插件示例
-class MyPlugin {
-    onLoad() {
-        console.log('MyPlugin loaded');
+```
+my-plugin/
+├── src/main/java/
+│   └── com/example/MyPlugin.java  # 插件主类
+├── src/main/resources/
+│   └── plugin.json                # 插件描述文件
+└── pom.xml                        # Maven配置
+```
+
+### 插件示例
+
+#### Java插件示例
+```java
+public class HelloWordPlugin extends Plugin {
+    @Override
+    public void onLoad() {
+        this.saveDefaultConfig();
     }
-    
-    onUnload() {
-        console.log('MyPlugin unloaded');
+
+    @Override
+    public EventListener<?, ?> getEventListener() {
+        return new HelloWordListener(this);
     }
-    
-    // 实现插件功能
-    execute() {
-        console.log('Executing MyPlugin');
+
+    @Override
+    public CommandExecutor getCommandExecutor() {
+        return new HelloWordExecutor(this);
     }
 }
+```
 
-exports.default = MyPlugin;
+#### 命令执行器示例
+```java
+@CommandLine.Command(name = "hello", aliases = {"hi"}, description = "Hello World 命令")
+public class HelloWordExecutor extends CommandExecutor implements Callable<String> {
+    @Option(names = {"-n", "--name"}, description = "名称")
+    private String name;
+
+    public HelloWordExecutor(Plugin plugin) {
+        super(plugin);
+    }
+
+    @Override
+    public String call() {
+        return "Hello, " + (name != null ? name : "World") + "!";
+    }
+}
 ```
 
 ## 🛡️ 错误处理
@@ -116,6 +193,7 @@ exports.default = MyPlugin;
 1. **依赖缺失**：确保所有依赖都正确配置，特别是运行时依赖
 2. **插件加载失败**：检查插件格式和依赖是否正确
 3. **配置错误**：验证配置文件格式和内容
+4. **命令执行失败**：检查命令格式和参数是否正确
 
 ### 日志查看
 
@@ -135,6 +213,16 @@ exports.default = MyPlugin;
 mvn test
 ```
 
+### 构建插件
+
+1. **编译插件**
+   ```bash
+   mvn clean package -pl jscriptx-plugins/jscriptx-plugin-helloword -am
+   ```
+
+2. **安装插件**
+   将生成的jar文件复制到 `plugins` 目录
+
 ## 🤝 贡献
 
 欢迎各位开发者贡献代码、报告问题或提出建议！
@@ -151,8 +239,8 @@ mvn test
 
 ## 📞 联系方式
 
-- **GitHub**：[https://github.com/yourusername/JScriptX](https://github.com/yourusername/JScriptX)
-- **Email**：your.email@example.com
+- **GitHub**：[https://github.com/liwncy/JScriptX](https://github.com/yourusername/JScriptX)
+- **Email**：liwncy@qq.com
 
 ---
 
