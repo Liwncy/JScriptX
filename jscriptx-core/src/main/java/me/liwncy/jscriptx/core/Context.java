@@ -4,6 +4,7 @@ import io.vertx.core.Vertx;
 import lombok.Getter;
 import lombok.Setter;
 import me.liwncy.jscriptx.core.manager.command.CommandManager;
+import me.liwncy.jscriptx.core.manager.event.EventManager;
 import me.liwncy.jscriptx.core.manager.plugin.PluginManager;
 
 /**
@@ -24,6 +25,7 @@ public final class Context {
 
     private Config config;
 
+    private EventManager eventManager;
     private PluginManager pluginManager;
     private CommandManager commandManager;
 

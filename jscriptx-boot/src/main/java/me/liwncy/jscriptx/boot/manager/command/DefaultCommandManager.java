@@ -1,6 +1,6 @@
 package me.liwncy.jscriptx.boot.manager.command;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.StrUtil;
 import io.vertx.core.Future;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +31,26 @@ public class DefaultCommandManager implements CommandManager {
 
     @Override
     public Future<Void> onInit() throws Exception {
+        // 注册全局 PmExecutor 命令
+        register().onSuccess(promise -> {log.info("命令管理器注册 PmExecutor 命令成功");})
+                .onFailure(t -> log.warn("命令管理器注册 PmExecutor 命令时出现异常：{}", t.getMessage()));
         log.info("命令管理器初始化完成");
+        ThreadUtil.execute(scanner());
         return Future.succeededFuture();
+    }
+
+    /**
+     * 注册 PmExecutor 命令
+     */
+    public Future<Void> register() {
+        return Future.future(promise -> {
+            PmExecutor pmExecutor = new PmExecutor();
+            CommandLine pmCommand = new CommandLine(pmExecutor);
+            container.put(StrUtil.addPrefixIfNot(pmCommand.getCommandName(), "/"), pmExecutor);
+            Optional.ofNullable(pmCommand.getCommandSpec().aliases())
+                    .ifPresent(aliases -> Arrays.stream(aliases).forEach(alias -> this.container.put(StrUtil.addPrefixIfNot(alias, "/"), pmExecutor)));
+            promise.complete();
+        });
     }
 
     @Override
@@ -58,6 +76,41 @@ public class DefaultCommandManager implements CommandManager {
         }));
     }
 
+    /**
+     * 扫描控制台输入
+     */
+    private Runnable scanner() {
+        return () -> {
+            log.info("开启监听控制台命令输入");
+
+            // 扫描控制台输入
+            var scanner = new java.util.Scanner(System.in);
+            while (scanner.hasNext()) {
+                // 构建文本消息
+                var text = scanner.nextLine();
+                if (StrUtil.isBlank(text)) {
+                    continue;
+                }
+                execute(text)
+                        .onFailure(e -> {
+                            System.out.println("命令执行失败：" + e.getMessage());
+                            log.error("命令执行失败：{}", e.getMessage());
+                        });
+            }
+        };
+    }
+
+    @Override
+    public Future<Void> execute(String commandLine) {
+        if (StrUtil.isBlank(commandLine)) {
+            return Future.succeededFuture();
+        }
+        // 解析命令行
+        Command command = Command.of(commandLine);
+        // 执行命令
+        return execute(command);
+    }
+
     @Override
     public Future<Void> execute(Command command) {
         // 1、获取命令，如果容器中不存在该命令则返回
@@ -67,13 +120,6 @@ public class DefaultCommandManager implements CommandManager {
         var executor = this.container.get(command.getCommand());
         executor.setCommand(command);
         return Future.<String>future(promise -> {
-                    // 判断执行权限
-                    // if (!this.hasPermission(command.getCommand(), user)) {
-                    //     if (Context.get().getConfig().getCommand().getShowTip()) {
-                    //         promise.complete(Optional.ofNullable(executor.getNoPermissionTip()).orElse(Context.get().getConfig().getCommand().getNoPermissionTip()));
-                    //     }
-                    //     return;
-                    // }
 
                     // 构建CommandLine并重定向输出流
                     var cmd = new CommandLine(executor);
@@ -96,6 +142,7 @@ public class DefaultCommandManager implements CommandManager {
                                 .collect(Collectors.joining("\n"));
                         writer.flush();
                         String res = StrUtil.blankToDefault(result, baos.toString());
+                        log.info("命令[{}]执行结果：\n{}", command.getCommand(), res);
                         promise.complete(StrUtil.isBlank(res) ? "命令执行成功，但是没有返回值" : res);
                     } catch (Exception e) {
                         // log.error("执行指令 [{}] 时出现异常: {}", command.getMessage().getContent(), e.getMessage());
@@ -126,42 +173,4 @@ public class DefaultCommandManager implements CommandManager {
         return this.container.values();
     }
 
-    // @Override
-    // public Collection<Contactable> permissions(String command) {
-    //     // 从容器中获取命令执行器，并从中获取到所属的插件对象
-    //     var plugin = this.container.get(StrUtil.addPrefixIfNot(command, "/")).getPlugin();
-    //     // 从插件管理器中获取插件配置
-    //     var config = Context.get().getPluginManager().getConfig(plugin.getDescription().getName());
-    //     return Optional.ofNullable(config).map(PluginConfig::getPermissions).orElse(null);
-    // }
-
-    // @Override
-    // public Map<String, Collection<Contactable>> permissions() {
-    //     return this.container.entrySet().stream()
-    //             .filter(entry -> CollUtil.isNotEmpty(this.permissions(entry.getKey())))
-    //             .collect(Collectors.toMap(Map.Entry::getKey, entry -> this.permissions(entry.getKey())));
-    // }
-    //
-    // @Override
-    // public boolean hasPermission(String command, Contactable user) {
-    //     var isOwner = Objects.equals(user.getId(), Context.get().getOwner().getId());
-    //     var contains = Optional.ofNullable(this.permissions(command)).map(p -> p.contains(user)).orElse(false);
-    //     return isOwner || contains;
-    // }
-
-//     @Override
-//     public void addPermission(String command, Contactable user) {
-//         Optional.ofNullable(this.permissions(command)).ifPresent(p -> {
-//             p.add(user);
-//             Context.get().getPluginManager().saveConfig();
-//         });
-//     }
-//
-//     @Override
-//     public void removePermission(String command, Contactable user) {
-//         Optional.ofNullable(this.permissions(command)).ifPresent(p -> {
-//             p.remove(user);
-//             Context.get().getPluginManager().saveConfig();
-//         });
-//     }
 }

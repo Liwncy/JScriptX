@@ -6,17 +6,18 @@
         <artifactId>jscriptx</artifactId>
         <groupId>me.liwncy.jscriptx</groupId>
         <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jscriptx-plugins</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>JScriptX Plugins</name>
     <description>插件库</description>
 
     <modules>
-        <!-- <module>jbot-plugin-pm</module> -->
+        <module>jscriptx-plugin-helloword</module>
         <!-- <module>jbot-plugin-drink</module> -->
         <!--<module>jbot-plugin-js_example</module>-->
     </modules>
@@ -25,7 +26,8 @@
         <dependency>
             <groupId>me.liwncy.jscriptx</groupId>
             <artifactId>jscriptx-core</artifactId>
-            <version>${project.version}</version>
+            <version>0.0.1</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -35,6 +37,11 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

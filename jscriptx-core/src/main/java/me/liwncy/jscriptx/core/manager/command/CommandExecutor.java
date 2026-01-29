@@ -10,7 +10,7 @@ import picocli.CommandLine;
  * 命令执行器
  * @author ovo created on 2025/02/18.
  */
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 @CommandLine.Command(sortOptions = false, resourceBundle = "i18n", mixinStandardHelpOptions = true)
 public abstract class CommandExecutor {
 
@@ -19,6 +19,14 @@ public abstract class CommandExecutor {
     protected @Getter final Plugin plugin;
     /** 命令的相关元数据，由运行时CommandLine注入，在子类实现中可能会用到 */
     protected @CommandLine.Spec CommandLine.Model.CommandSpec spec;
+
+    public CommandExecutor() {
+        this.plugin = null;
+    }
+
+    public CommandExecutor(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * 获取无执行权限提示

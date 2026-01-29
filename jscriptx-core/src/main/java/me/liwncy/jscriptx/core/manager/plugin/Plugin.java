@@ -14,6 +14,8 @@ import me.liwncy.jscriptx.core.constant.Constants;
 import me.liwncy.jscriptx.core.constant.FileConstants;
 import me.liwncy.jscriptx.core.exception.PluginException;
 import me.liwncy.jscriptx.core.manager.command.CommandExecutor;
+import me.liwncy.jscriptx.core.manager.event.CallListener;
+import me.liwncy.jscriptx.core.manager.event.EventListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,10 +42,12 @@ public abstract class Plugin implements PluginLifeCycle, Comparable<Plugin> {
 
     public abstract CommandExecutor getCommandExecutor();
 
+    public abstract EventListener<?, ?> getEventListener();
 
-    // public CallListener getCallListener() {
-    //     return null;
-    // }
+
+    public CallListener getCallListener() {
+        return null;
+    }
 
     @Override
     public int compareTo(Plugin o) {

@@ -18,6 +18,7 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -30,7 +31,7 @@ import java.util.stream.Stream;
 public class DebugPluginManager extends DefaultPluginManager {
 
     private final Vertx x = Context.vertx;
-    private final String path = Context.get().getConfig().getBase().getDebugConfig().getString("path", System.getProperty("user.dir") + File.separator + "jbot-plugins");
+    private final String path = Context.get().getConfig().getBase().getDebugConfig().getString("path", System.getProperty("user.dir") + File.separator + "jscriptx-plugins");
     private final String subPath = StrUtil.join(File.separator, "target", "classes");
 
     private final String raw = """
@@ -88,9 +89,13 @@ public class DebugPluginManager extends DefaultPluginManager {
 
     @Override
     public void loadPlugins() {
-        var files = new File(path).listFiles(File::isDirectory);
+        var excludedFolders = Set.of("target");
+        var files = new File(path).listFiles(file ->
+                file.isDirectory() && !excludedFolders.contains(file.getName())
+        );
         if (Objects.isNull(files)) {return;}
-        Stream.of(files).forEach(file -> this.load(file)
+        Stream.of(files)
+                .forEach(file -> this.load(file)
                 .onFailure(e -> log.error("插件 [{}] 加载失败：{}", file.getName(), e.getMessage(), e))
                 .onSuccess(v -> log.info("插件 [{}] 加载成功", file.getName()))
         );
@@ -99,7 +104,7 @@ public class DebugPluginManager extends DefaultPluginManager {
     @Override
     public void reInit() {
         super.reInit();
-        ThreadUtil.execute(scanner());
+        // ThreadUtil.execute(scanner());
     }
 
     @Override

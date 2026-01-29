@@ -1,0 +1,7 @@
+{
+  "name": "helloword",
+  "main": "me.liwncy.jscriptx.plugin.helloword.HelloWordPlugin",
+  "version": "1.0.0",
+  "description": "hello word!",
+  "authors": ["liwncy"]
+}

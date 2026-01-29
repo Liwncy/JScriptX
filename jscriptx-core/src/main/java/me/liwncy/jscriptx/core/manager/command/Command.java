@@ -18,14 +18,17 @@ public class Command {
     String[] args;
 
     /**
-     * 通过文本消息创建一个命令
+     * 通过控制台输入创建命令
      *
-     * @param message 消息
+     * @param input 输入文本
      * @return {@link Command }
      */
-    // public static Command of(Message message) {
-    //     return new Command(message);
-    // }
+    public static Command of(String input) {
+        String command = StrUtil.subBefore(input, ' ', false);
+        String argsPart = StrUtil.subAfter(input, ' ', false);
+        String[] args = StrUtil.isBlank(argsPart) ? new String[0] : argsPart.split(" ");
+        return new Command(command, args);
+    }
 
     /**
      *

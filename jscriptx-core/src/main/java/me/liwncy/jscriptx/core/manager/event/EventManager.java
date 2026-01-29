@@ -1,4 +1,4 @@
-package me.liwncy.jscriptx.core.manager.command;
+package me.liwncy.jscriptx.core.manager.event;
 
 import io.vertx.core.Future;
 import me.liwncy.jscriptx.core.Context;
@@ -6,18 +6,15 @@ import me.liwncy.jscriptx.core.manager.Manager;
 import me.liwncy.jscriptx.core.manager.ManagerLifeCycle;
 import me.liwncy.jscriptx.core.manager.plugin.Plugin;
 
-import java.util.Collection;
-import java.util.Map;
-
 /**
- * 命令管理器
+ * 事件管理器
  *
  * @author ovo created on 2025/02/17.
  */
-public interface CommandManager extends Manager, ManagerLifeCycle {
+public interface EventManager extends Manager, ManagerLifeCycle {
 
     /**
-     * 注册命令执行器
+     * 注册插件中的事件监听器
      *
      * @param plugin 插件
      * @return {@link Future }<{@link Void }>
@@ -25,7 +22,7 @@ public interface CommandManager extends Manager, ManagerLifeCycle {
     Future<Void> register(Plugin plugin);
 
     /**
-     * 卸载命令执行器
+     * 卸载插件中的事件监听器
      *
      * @param plugin 插件
      * @return {@link Future }<{@link Void }>
@@ -33,40 +30,18 @@ public interface CommandManager extends Manager, ManagerLifeCycle {
     Future<Void> unregister(Plugin plugin);
 
     /**
-     * 执行命令行
+     * 发布事件
      *
-     * @param commandLine 命令行
+     * @param event 事件
      * @return {@link Future }<{@link Void }>
      */
-    Future<Void> execute(String commandLine);
-
-    /**
-     * 执行命令
-     *
-     * @param command 命令
-     * @return {@link Future }<{@link Void }>
-     */
-    Future<Void> execute(Command command);
-
-    /**
-     * 获取所有命令名称（包含别名）
-     *
-     * @return {@link Collection }<{@link String }>
-     */
-    Collection<String> names();
-
-    /**
-     * 获取所有命令执行器
-     *
-     * @return {@link Collection }<{@link CommandExecutor }>
-     */
-    Collection<CommandExecutor> list();
+    Future<Void> publish(Event<?> event);
 
     @Override
     default Future<Void> init() {
         return Future.future(promise -> {
             try {
-                this.onInit().onFailure(promise::fail).onSuccess(v -> Context.get().setCommandManager(this));
+                this.onInit().onFailure(promise::fail).onSuccess(v -> Context.get().setEventManager(this));
                 promise.complete();
             } catch (Exception e) {promise.fail(e);}
         });
@@ -76,7 +51,7 @@ public interface CommandManager extends Manager, ManagerLifeCycle {
     default Future<Void> close() {
         return Future.future(promise -> {
             try {
-                this.onDestroy().onFailure(promise::fail).onSuccess(v -> Context.get().setCommandManager(null));
+                this.onDestroy().onFailure(promise::fail).onSuccess(v -> Context.get().setEventManager(null));
                 promise.complete();
             } catch (Exception e) {promise.fail(e);}
         });
