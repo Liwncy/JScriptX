@@ -8,7 +8,7 @@ import me.liwncy.jscriptx.core.Context;
 /**
  * 事件
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 @Slf4j
 @Getter

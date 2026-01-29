@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 命令管理器
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 public interface CommandManager extends Manager, ManagerLifeCycle {
 

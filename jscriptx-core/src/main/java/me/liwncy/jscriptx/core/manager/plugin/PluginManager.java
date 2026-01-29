@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * 插件管理器
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 public interface PluginManager extends Manager, ManagerLifeCycle {
 

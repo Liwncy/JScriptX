@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 /**
  * 调试插件管理器
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  * @apiNote 调试插件管理器，用于调试插件，不建议在生产环境中使用。
  */
 @Slf4j

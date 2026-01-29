@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * 插件工厂
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 public class PluginFactory {
 
@@ -100,7 +100,7 @@ public class PluginFactory {
     /**
      * js 插件文件系统
      *
-     * @author ovo created on 2024/12/25.
+     * @author liwncy
      * @apiNote 用于js在运行时读取文件进行import
      */
     private record JsPluginFileSystem(ClassLoader classLoader) implements FileSystem {

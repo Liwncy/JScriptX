@@ -20,7 +20,7 @@ import java.util.zip.ZipFile;
 /**
  * 插件加载器
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  * @implNote 扫描指定目录下的jar或zip文件，加载其中的插件类
  */
 @Slf4j

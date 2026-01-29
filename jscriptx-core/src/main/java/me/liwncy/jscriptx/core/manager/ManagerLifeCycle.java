@@ -5,7 +5,7 @@ import io.vertx.core.Future;
 /**
  * 管理器生命周期
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 public interface ManagerLifeCycle {
 

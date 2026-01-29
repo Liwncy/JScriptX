@@ -4,7 +4,7 @@ package me.liwncy.jscriptx.core.manager.event;
 /**
  * 命令事件
  *
- * @author ovo created on 2025/02/25.
+ * @author liwncy
  */
 public class CommandEvent<S> extends Event<String> {
     public CommandEvent(String data) {

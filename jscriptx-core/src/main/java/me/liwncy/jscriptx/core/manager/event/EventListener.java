@@ -12,7 +12,7 @@ import java.util.Optional;
  * 事件监听器
  * <p>{@code E} 是需要监听的事件类型，{@code S} 是需要监听的事件源类型
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 public abstract class EventListener<E extends Event<S>, S> {
 

@@ -9,7 +9,7 @@ import me.liwncy.jscriptx.core.manager.plugin.Plugin;
 /**
  * 事件管理器
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 public interface EventManager extends Manager, ManagerLifeCycle {
 

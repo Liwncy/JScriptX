@@ -6,7 +6,7 @@ import me.liwncy.jscriptx.core.manager.plugin.Plugin;
 /**
  * 插件异常事件
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 @Getter
 public class PluginExceptionEvent extends ExceptionEvent {

@@ -10,7 +10,7 @@ import java.nio.channels.SeekableByteChannel;
 /**
  * 只读可寻字节数组通道
  *
- * @author ovo created on 2024/12/25.
+ * @author liwncy
  */
 @RequiredArgsConstructor
 public class ReadOnlySeekableByteArrayChannel implements SeekableByteChannel {

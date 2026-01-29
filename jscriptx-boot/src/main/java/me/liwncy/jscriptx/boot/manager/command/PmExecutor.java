@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
 /**
  * 插件管理相关命令执行器
  *
- * @author ovo created on 2025/02/27.
+ * @author liwncy
  */
 @CommandLine.Command(name = "plugin-manager", aliases = {"pm"}, description = "插件管理")
 public class PmExecutor extends CommandExecutor implements Callable<String> {

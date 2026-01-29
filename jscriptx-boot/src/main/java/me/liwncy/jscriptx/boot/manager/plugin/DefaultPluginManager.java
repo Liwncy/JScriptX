@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 /**
  * 默认插件管理器
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 @Slf4j
 public class DefaultPluginManager implements PluginManager {

@@ -5,7 +5,7 @@ import io.vertx.core.Promise;
 /**
  * 插件生命周期
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 public interface PluginLifeCycle {
 

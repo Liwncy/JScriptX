@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 插件描述
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 @Data
 public class PluginDescription implements Serializable {

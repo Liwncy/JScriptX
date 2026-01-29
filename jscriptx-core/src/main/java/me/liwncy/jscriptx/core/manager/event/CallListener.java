@@ -8,7 +8,7 @@ import me.liwncy.jscriptx.core.manager.plugin.Plugin;
 /**
  * 调用监听器
  *
- * @author ovo created on 2025/02/27.
+ * @author liwncy
  */
 @RequiredArgsConstructor
 public abstract class CallListener {

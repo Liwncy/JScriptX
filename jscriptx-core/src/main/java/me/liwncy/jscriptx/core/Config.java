@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import me.liwncy.jscriptx.core.constant.FileConstants;
 
 /**
- * jbot 配置
+ * jscriptx 配置
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 @Data
 @Slf4j

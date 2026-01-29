@@ -7,7 +7,7 @@ import me.liwncy.jscriptx.core.Context;
 /**
  * 命令
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 @Value
 public class Command {

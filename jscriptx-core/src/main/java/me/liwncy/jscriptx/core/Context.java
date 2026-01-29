@@ -10,7 +10,7 @@ import me.liwncy.jscriptx.core.manager.plugin.PluginManager;
 /**
  * 上下文
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 @Setter
 @Getter

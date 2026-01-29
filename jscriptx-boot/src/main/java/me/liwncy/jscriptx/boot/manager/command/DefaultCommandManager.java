@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * 默认命令管理器
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 @Slf4j
 public class DefaultCommandManager implements CommandManager {

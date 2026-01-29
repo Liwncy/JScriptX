@@ -3,7 +3,7 @@ package me.liwncy.jscriptx.core.manager.event;
 /**
  * 系统事件
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 public class SystemEvent extends Event<String> {
     public SystemEvent(String data) {

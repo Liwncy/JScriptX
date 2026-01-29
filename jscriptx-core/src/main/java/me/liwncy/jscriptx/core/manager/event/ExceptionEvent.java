@@ -3,7 +3,7 @@ package me.liwncy.jscriptx.core.manager.event;
 /**
  * 异常事件
  *
- * @author ovo created on 2025/02/18.
+ * @author liwncy 
  */
 public class ExceptionEvent extends Event<Throwable> {
     public ExceptionEvent(Throwable data) {

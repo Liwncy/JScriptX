@@ -5,7 +5,7 @@ import lombok.experimental.StandardException;
 /**
  * 未知枚举异常
  *
- * @author ovo created on 2025/02/17.
+ * @author liwncy 
  */
 @StandardException
 public class UnknownEnumException extends RuntimeException {
