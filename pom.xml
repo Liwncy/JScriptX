@@ -15,6 +15,7 @@
     <modules>
         <module>jscriptx-boot</module>
         <module>jscriptx-core</module>
+        <module>jscriptx-function</module>
         <module>jscriptx-plugins</module>
     </modules>
 
@@ -43,6 +44,8 @@
         <ver.ffmpeg>7.1</ver.ffmpeg>
         <ver.jsoup>1.19.1</ver.jsoup>
         <ver.polyglot>24.1.1</ver.polyglot>
+        <ver.jnativehook>2.2.2</ver.jnativehook>
+        <ver.jna>5.13.0</ver.jna>
 
         <easyj-maven-plugin.version>1.1.5</easyj-maven-plugin.version>
 
@@ -112,16 +115,22 @@
                 <version>0.10.2</version>
             </dependency>
 
-            <!-- 按键监听依赖（替代JIntellitype） -->
+            <!-- 全局键盘监听依赖 -->
+            <dependency>
+                <groupId>com.github.kwhat</groupId>
+                <artifactId>jnativehook</artifactId>
+                <version>${ver.jnativehook}</version>
+            </dependency>
+
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna</artifactId>
-                <version>5.12.1</version>
+                <version>${ver.jna}</version>
             </dependency>
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna-platform</artifactId>
-                <version>5.12.1</version>
+                <version>${ver.jna}</version>
             </dependency>
 
             <!-- 单元测试 -->

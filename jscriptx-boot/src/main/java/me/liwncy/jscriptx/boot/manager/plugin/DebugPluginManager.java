@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.liwncy.jscriptx.core.Context;
 import me.liwncy.jscriptx.core.constant.Constants;
 import me.liwncy.jscriptx.core.exception.PluginException;
+import me.liwncy.jscriptx.core.manager.event.CallListener;
 import me.liwncy.jscriptx.core.manager.plugin.Plugin;
 import me.liwncy.jscriptx.core.manager.plugin.PluginConfig;
 import me.liwncy.jscriptx.core.manager.plugin.PluginDescription;
@@ -158,9 +159,9 @@ public class DebugPluginManager extends DefaultPluginManager {
                         promise.fail(StrUtil.format("加载插件 [{}] 时出现异常：{}", plugin.getDescription().getName(), e.getMessage()));
                     }
                     plugin.setEnabled(Optional.ofNullable(this.config.get(plugin.getDescription().getName())).map(PluginConfig::getEnabled).orElse(true));
-                    // Context.get().getEventManager().register(plugin).onFailure(promise::fail);
+                    Context.get().getEventManager().register(plugin).onFailure(promise::fail);
                     Context.get().getCommandManager().register(plugin).onFailure(promise::fail);
-                    // Optional.ofNullable(plugin.getCallListener()).ifPresent(CallListener::register);
+                    Optional.ofNullable(plugin.getCallListener()).ifPresent(CallListener::register);
                     this.list.add(plugin);
                     this.list.sort(Comparator.comparingInt(p -> p.getDescription().getPriority()));
                     this.container.put(plugin.getDescription().getName(), plugin);

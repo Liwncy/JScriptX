@@ -18,7 +18,7 @@ public class Config {
     private JConfig base = new JConfig();
     // private LoginConfig login = new LoginConfig();
     // private CommandConfig command = new CommandConfig();
-    // private JsonObject adapter = new JsonObject();
+    private JsonObject funcBaseConfig = new JsonObject();
 
 
     public static @Data class JConfig {
