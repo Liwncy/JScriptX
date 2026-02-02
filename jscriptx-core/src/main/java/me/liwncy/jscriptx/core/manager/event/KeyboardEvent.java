@@ -2,7 +2,6 @@ package me.liwncy.jscriptx.core.manager.event;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import me.liwncy.jscriptx.core.Context;
 
 import java.util.Set;
 
@@ -13,20 +12,13 @@ import java.util.Set;
  */
 @Slf4j
 @Getter
-public class KeyEvent extends Event<KeyEvent.KeyData> {
+public class KeyboardEvent extends Event<KeyboardEvent.KeyData> {
 
-    private final int keyCode;
-    private final String keyText;
-    private final KeyEventType type;
-    // 当前所有按下的按键
-    private final Set<Integer> pressedKeys;
+    private final KeyData keyData;
 
-    public KeyEvent(int keyCode, String keyText, KeyEventType type, Set<Integer> pressedKeys) {
-        super(new KeyData(keyCode, keyText, type, pressedKeys));
-        this.keyCode = keyCode;
-        this.keyText = keyText;
-        this.type = type;
-        this.pressedKeys = pressedKeys;
+    public KeyboardEvent(KeyData keyData) {
+        super(keyData);
+        this.keyData = keyData;
     }
 
     public enum KeyEventType {
@@ -55,20 +47,20 @@ public class KeyEvent extends Event<KeyEvent.KeyData> {
      * 创建并发布按键按下事件
      */
     public static void pressed(int keyCode, String keyText, Set<Integer> pressedKeys) {
-        new KeyEvent(keyCode, keyText, KeyEventType.PRESSED, pressedKeys);
+        new KeyboardEvent(new KeyData(keyCode, keyText, KeyEventType.PRESSED, pressedKeys));
     }
 
     /**
      * 创建并发布按键释放事件
      */
     public static void released(int keyCode, String keyText, Set<Integer> pressedKeys) {
-        new KeyEvent(keyCode, keyText, KeyEventType.RELEASED, pressedKeys);
+        new KeyboardEvent(new KeyData(keyCode, keyText, KeyEventType.RELEASED, pressedKeys));
     }
 
     /**
      * 创建并发布按键输入事件
      */
     public static void typed(int keyCode, String keyText, Set<Integer> pressedKeys) {
-        new KeyEvent(keyCode, keyText, KeyEventType.TYPED, pressedKeys).publish();
+        new KeyboardEvent(new KeyData(keyCode, keyText, KeyEventType.TYPED, pressedKeys)).publish();
     }
 }

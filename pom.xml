@@ -16,7 +16,7 @@
         <module>jscriptx-boot</module>
         <module>jscriptx-core</module>
         <module>jscriptx-function</module>
-        <module>jscriptx-plugins</module>
+        <!-- <module>jscriptx-plugins</module> -->
     </modules>
 
     <properties>
@@ -53,6 +53,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>me.liwncy.jscriptx</groupId>
+                <artifactId>jscriptx-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- vertx依赖管理 -->
             <dependency>
                 <groupId>io.vertx</groupId>

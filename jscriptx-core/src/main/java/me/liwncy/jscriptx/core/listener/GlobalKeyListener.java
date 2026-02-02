@@ -5,7 +5,7 @@ import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import lombok.extern.slf4j.Slf4j;
-import me.liwncy.jscriptx.core.manager.event.KeyEvent;
+import me.liwncy.jscriptx.core.manager.event.KeyboardEvent;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -115,7 +115,7 @@ public class GlobalKeyListener implements NativeKeyListener {
             String combinationText = buildCombinationText();
 
             // 通过框架事件系统发布按键按下事件
-            KeyEvent.pressed(keyCode, combinationText, pressedKeys);
+            KeyboardEvent.pressed(keyCode, combinationText, pressedKeys);
 
             // 执行注册的动作
             Runnable action = keyActions.get(keyCode);
@@ -138,7 +138,7 @@ public class GlobalKeyListener implements NativeKeyListener {
             String combinationText = buildCombinationText();
 
             // 通过框架事件系统发布按键释放事件
-            KeyEvent.released(keyCode, combinationText, pressedKeys);
+            KeyboardEvent.released(keyCode, combinationText, pressedKeys);
         }
     }
 
@@ -156,7 +156,7 @@ public class GlobalKeyListener implements NativeKeyListener {
             String combinationText = buildCombinationText();
 
             // 通过框架事件系统发布按键输入事件
-            KeyEvent.typed(keyCode, combinationText, pressedKeys);
+            KeyboardEvent.typed(keyCode, combinationText, pressedKeys);
         }
     }
     

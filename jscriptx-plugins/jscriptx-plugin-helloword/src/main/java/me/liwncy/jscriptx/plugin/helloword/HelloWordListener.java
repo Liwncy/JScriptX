@@ -11,20 +11,20 @@ import me.liwncy.jscriptx.core.manager.plugin.Plugin;
  * @author 插件监听
  */
 @Slf4j(topic = "HelloWordListener")
-public class HelloWordListener extends EventListener<KeyEvent, KeyEvent.KeyData> {
+public class HelloWordListener extends EventListener<KeyboardEvent, KeyboardEvent.KeyData> {
     public HelloWordListener(Plugin plugin) {
         super(plugin);
     }
 
     @Override
-    public boolean support(@NonNull KeyEvent event, KeyEvent.KeyData source) {
-        log.info("[{}] 插件收到按键：{}", event.getType(), source.getKeyText());
+    public boolean support(@NonNull KeyboardEvent event, KeyboardEvent.KeyData source) {
+        log.debug("[{}] 插件收到按键：{}", source.getType(), source.getKeyText());
         log.debug("[{}] 插件收到按键：{}", plugin.getDescription().getName(), source.getKeyText());
         return false;
     }
 
     @Override
-    public boolean onEvent(@NonNull KeyEvent event, KeyEvent.KeyData source) {
+    public boolean onEvent(@NonNull KeyboardEvent event, KeyboardEvent.KeyData source) {
         return false;
     }
 

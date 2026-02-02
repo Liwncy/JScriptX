@@ -1,0 +1,7 @@
+{
+  "name": "autodialog",
+  "main": "me.liwncy.jscriptx.plugin.autodialog.AutoDialogPlugin",
+  "version": "1.0.0",
+  "description": "实现自动对话，按0键启动/停止，自动按F",
+  "authors": ["liwncy"]
+}

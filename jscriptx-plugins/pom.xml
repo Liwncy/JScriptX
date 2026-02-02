@@ -16,8 +16,13 @@
     <name>JScriptX Plugins</name>
     <description>插件库</description>
 
+    <properties>
+        <revision>0.0.1</revision>
+    </properties>
+
     <modules>
         <module>jscriptx-plugin-helloword</module>
+        <module>jscriptx-plugin-autodialog</module>
         <!-- <module>jbot-plugin-drink</module> -->
         <!--<module>jbot-plugin-js_example</module>-->
     </modules>
@@ -26,7 +31,6 @@
         <dependency>
             <groupId>me.liwncy.jscriptx</groupId>
             <artifactId>jscriptx-core</artifactId>
-            <version>0.0.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

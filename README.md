@@ -33,12 +33,19 @@ JScriptX是一个现代化的插件式游戏脚本框架，旨在提供灵活、
 JScriptX/
 ├── jscriptx-boot/        # 启动模块
 │   ├── src/main/java/    # 源代码
+│   ├── src/main/resources/  # 资源文件
 │   └── target/           # 构建输出
 ├── jscriptx-core/        # 核心引擎
 │   ├── src/main/java/    # 源代码
+│   ├── src/main/resources/  # 资源文件
+│   └── target/           # 构建输出
+├── jscriptx-function/     # 功能服务模块
+│   ├── src/main/java/    # 源代码
+│   ├── src/main/resources/  # 资源文件
 │   └── target/           # 构建输出
 ├── jscriptx-plugins/      # 插件模块
 │   ├── jscriptx-plugin-helloword/  # 示例插件
+│   ├── jscriptx-plugin-autodialog/  # 自动对话插件
 │   └── target/           # 构建输出
 ├── plugins/              # 插件目录
 ├── logs/                 # 日志目录
@@ -46,9 +53,10 @@ JScriptX/
 └── README.md             # 项目说明
 ```
 
-- **jscriptx-boot**：包含启动类和初始化逻辑
-- **jscriptx-core**：提供核心API和基础功能
-- **jscriptx-plugins**：插件管理和插件实现
+- **jscriptx-boot**：包含启动类和初始化逻辑，负责框架的启动和生命周期管理
+- **jscriptx-core**：提供核心API和基础功能，包括上下文管理、配置管理、事件系统等
+- **jscriptx-function**：功能服务模块，提供游戏自动化所需的核心功能，如键盘控制、鼠标控制、屏幕识别等
+- **jscriptx-plugins**：插件管理和插件实现，包含示例插件和自动对话插件
 - **plugins/**：存放插件文件的目录
 - **logs/**：日志文件输出目录
 - **config/**：配置文件目录
@@ -75,7 +83,11 @@ JScriptX/
 
 3. **运行项目**
    ```bash
-   java -jar jscriptx-boot/target/jscriptx-boot-0.0.1-jar-with-dependencies.jar
+   # 方法1：使用 Maven 运行
+   mvn exec:java -Dexec.mainClass="me.liwncy.jscriptx.boot.JScriptXBoot"
+   
+   # 方法2：使用构建的可执行 jar 文件
+   java -jar target/jscriptx-0.0.1-jar-with-dependencies.jar
    ```
 
 ## ⚙️ 配置说明
@@ -96,6 +108,40 @@ JScriptX/
 4. **插件加载**：启动时自动加载插件目录中的插件
 
 ## 📖 使用指南
+
+### 功能服务
+
+JScriptX 提供了丰富的功能服务，用于实现游戏自动化所需的各种操作：
+
+#### 核心功能
+
+- **键盘控制**：模拟键盘按键操作，支持按下、释放、组合键等
+- **鼠标控制**：模拟鼠标移动、点击、滚轮等操作
+- **屏幕识别**：识别屏幕上的图像、颜色、文本等
+- **坐标系统**：提供屏幕坐标转换和管理
+- **延迟控制**：精确的延迟和定时功能
+- **窗口管理**：获取和控制应用程序窗口
+- **脚本引擎**：执行 JavaScript 脚本
+
+#### 功能服务使用示例
+
+```java
+// 键盘控制示例
+KeyboardController.pressKey("A");
+KeyboardController.releaseKey("A");
+KeyboardController.type("Hello World");
+
+// 鼠标控制示例
+MouseController.moveTo(100, 100);
+MouseController.click(MouseController.MouseButton.LEFT);
+
+// 屏幕识别示例
+Color color = ScreenRecognizer.getColor(100, 100);
+boolean found = ScreenRecognizer.findImage("target.png");
+
+// 延迟控制示例
+Delay.ms(1000); // 延迟 1 秒
+```
 
 ### 命令系统
 
@@ -217,11 +263,26 @@ mvn test
 
 1. **编译插件**
    ```bash
+   # 编译所有插件
+   mvn clean package -pl jscriptx-plugins -am
+   
+   # 编译单个插件
    mvn clean package -pl jscriptx-plugins/jscriptx-plugin-helloword -am
+   mvn clean package -pl jscriptx-plugins/jscriptx-plugin-autodialog -am
    ```
 
 2. **安装插件**
    将生成的jar文件复制到 `plugins` 目录
+
+### 内置插件
+
+#### 1. HelloWord 插件
+- **功能**：示例插件，演示插件的基本结构和功能
+- **命令**：`/hello` 或 `/hi` - 打印问候信息
+
+#### 2. AutoDialog 插件
+- **功能**：自动对话脚本，可用于游戏中的自动对话场景
+- **配置**：支持自定义对话规则和触发条件
 
 ## 🤝 贡献
 
@@ -239,7 +300,7 @@ mvn test
 
 ## 📞 联系方式
 
-- **GitHub**：[https://github.com/liwncy/JScriptX](https://github.com/yourusername/JScriptX)
+- **GitHub**：[https://github.com/liwncy/JScriptX](https://github.com/liwncy/JScriptX)
 - **Email**：liwncy@qq.com
 
 ---
